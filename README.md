@@ -46,3 +46,7 @@
 - GET /users/{id}/subscriptions - получить подписки пользователя
 - DELETE /users/{id}/subscriptions/{sub_id} - удалить подписку
 - GET /subscriptions/top - получить ТОП-3 популярных подписок
+
+
+## Сборка и запуск
+docker compose up --build

@@ -3,16 +3,19 @@ package ru.webrise.subscriptionaccount.service;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.webrise.subscriptionaccount.dto.request.UserRequest;
 import ru.webrise.subscriptionaccount.dto.response.UserResponse;
 import ru.webrise.subscriptionaccount.exception.EntityAlreadyExistException;
 import ru.webrise.subscriptionaccount.exception.EntityNotFoundException;
+import ru.webrise.subscriptionaccount.exception.EntityReferenceException;
 import ru.webrise.subscriptionaccount.mapper.UserMapper;
 import ru.webrise.subscriptionaccount.model.User;
 import ru.webrise.subscriptionaccount.repository.UserRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -27,6 +30,7 @@ public class UserService {
       throw new EntityAlreadyExistException(String.format("User %s already exists", request.email()));
     }
     User newUser = userMapper.toUser(request);
+    log.info("Creating user: {}", newUser.getEmail());
     userRepository.save(newUser);
     return userMapper.toUserResponse(newUser);
   }
@@ -46,11 +50,14 @@ public class UserService {
 
   @Transactional
   public void deleteUser(UUID id) {
-    this.findUserById(id);
+    User user = this.findUserById(id);
+    if (!user.getSubscriptions().isEmpty()) {
+      throw new EntityReferenceException("The user has active subscriptions");
+    }
     userRepository.deleteById(id);
   }
 
-  private User findUserById(UUID id) {
+  User findUserById(UUID id) {
     return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
   }
 }

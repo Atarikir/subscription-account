@@ -1,6 +1,9 @@
 package ru.webrise.subscriptionaccount.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -26,4 +29,7 @@ public class User {
 
   @Column(nullable = false)
   private String lastName;
+
+  @OneToMany(mappedBy = "user")
+  private List<Subscription> subscriptions = new ArrayList<>();
 }

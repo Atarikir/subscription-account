@@ -29,6 +29,7 @@ public class SubscriptionService {
 
   @Transactional
   public SubscriptionResponse createSubscription(UUID userId, SubscriptionRequest request) {
+    User user = userService.findUserById(userId);
     Optional<Subscription> optional =
         subscriptionRepository.findByServiceNameAndUser_Id(request.serviceName(), userId);
     if (optional.isPresent()) {
@@ -36,7 +37,6 @@ public class SubscriptionService {
           String.format("Subscription %s already exists for the user", request.serviceName()));
     }
     Subscription newSubscription = subscriptionMapper.toSubscription(request);
-    User user = userService.findUserById(userId);
     newSubscription.setUser(user);
     log.info("Creating subscription {} for user: {} ", newSubscription.getServiceName(), user.getEmail());
     subscriptionRepository.save(newSubscription);

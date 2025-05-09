@@ -2,7 +2,6 @@ package ru.webrise.subscriptionaccount.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import ru.webrise.subscriptionaccount.dto.request.SubscriptionRequest;
 import ru.webrise.subscriptionaccount.dto.response.SubscriptionResponse;
 import ru.webrise.subscriptionaccount.model.Subscription;

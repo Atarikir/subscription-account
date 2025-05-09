@@ -13,8 +13,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, UUID
 
   Optional<Subscription> findByServiceNameAndUser_Id(String serviceName, UUID userId);
 
-//  List<Subscription> findAllByUser_Id(UUID userId);
-
   @Modifying
   void deleteByIdAndUser_Id(UUID id, UUID userId);
 

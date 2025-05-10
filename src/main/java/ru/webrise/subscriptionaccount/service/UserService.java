@@ -54,7 +54,7 @@ public class UserService {
     if (!user.getSubscriptions().isEmpty()) {
       throw new EntityReferenceException("The user has active subscriptions");
     }
-    userRepository.deleteById(id);
+    userRepository.delete(user);
   }
 
   User findUserById(UUID id) {
